@@ -1,6 +1,6 @@
 public class DataAnalyzer{
 
-    public int searchList(int[] numbers, int target) {
+    public static int searchList(int[] numbers, int target) {
         
         int index = 0;
         while(index<=numbers.length-1)
@@ -18,7 +18,8 @@ public class DataAnalyzer{
 
 
     public static void main(String[] args) {
-
+        int[] arr = {10,20,30,40,50};
+        System.out.println(searchList(arr,50));
     }
 
 }

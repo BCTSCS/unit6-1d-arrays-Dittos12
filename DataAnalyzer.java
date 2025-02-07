@@ -1,3 +1,7 @@
+import java.util.*;
+import java.io.File;
+import java.io.IOException;
+
 public class DataAnalyzer{
 
     //linear search
@@ -26,7 +30,24 @@ public class DataAnalyzer{
 
     public static void main(String[] args) {
         int[] arr = {10,20,30,40,50};
+        int[] array = new int[100];
         System.out.println(searchList(arr,50));
+
+        try {
+            File f = new File("numbers.txt");
+            Scanner input = new Scanner(f);
+            for(int i=0;i<100;i++)
+            {
+                array[i] = input.nextInt();
+            }
+        }
+        catch(IOException e) {
+            System.out.println("file not found");
+        }
+
+        System.out.println(array);
+        System.out.println(searchList(array,44));
+        System.out.println(searchList(44,array));
     }
 
 }

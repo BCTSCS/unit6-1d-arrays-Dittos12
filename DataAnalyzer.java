@@ -28,6 +28,19 @@ public class DataAnalyzer{
         return -1;
     }
 
+    public static String toStringArray(int[] target){
+
+
+
+        return "";
+    }
+
+    public static double toDoubleArray(int[] target){
+
+
+        return -1;
+    }
+
     public static void main(String[] args) {
         int[] arr = {10,20,30,40,50};
         int[] array = new int[100];

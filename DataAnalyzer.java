@@ -1,66 +1,192 @@
+import java.io.*;
 import java.util.*;
-import java.io.File;
-import java.io.IOException;
 
-public class DataAnalyzer{
+ 
 
-    //linear search
-    public static int searchList(int[] numbers, int target) {
-        
-        int index = 0;
-        while(index<=numbers.length-1)
-        {
-            if(numbers[index]==target)
-            {
-                return index;
-            }
-            index++;
-        }
+public class DataAnalyzer {
 
-        return -1;
+    private String[] countries;
+
+    private int[] populations;
+
+    private String[] incomes;
+
+    private double[] unemploymentRates;
+
+ 
+
+    // Constructor to initialize data
+
+    public DataAnalyzer(String countriesFile, String populationsFile, String incomesFile, String unemploymentFile) {
+
+        countries = readStringArray(countriesFile);
+
+        populations = readIntArray(populationsFile);
+
+        incomes = readIncomeCategoryArray(incomesFile);
+
+        unemploymentRates = readDoubleArray(unemploymentFile);
+
     }
 
-    //binary search
-    public static int searchList(int target, int[] numbers) {
+ 
 
-        
+    // Reads file and returns String array
 
-        return -1;
-    }
+    private String[] readStringArray(String filename) {
 
-    public static String toStringArray(int[] target){
-
-
-
-        return "";
-    }
-
-    public static double toDoubleArray(int[] target){
-
-
-        return -1;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {10,20,30,40,50};
-        int[] array = new int[100];
-        System.out.println(searchList(arr,50));
+        ArrayList<String> list = new ArrayList<>();
 
         try {
-            File f = new File("numbers.txt");
-            Scanner input = new Scanner(f);
-            for(int i=0;i<100;i++)
-            {
-                array[i] = input.nextInt();
+
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+
+                list.add(line);
+
             }
-        }
-        catch(IOException e) {
-            System.out.println("file not found");
+
+            br.close();
+
+        } catch (IOException e) {
+
+            System.out.println("Error reading file: " + filename);
+
         }
 
-        System.out.println(array);
-        System.out.println(searchList(array,44));
-        System.out.println(searchList(44,array));
+        return list.isEmpty() ? new String[0] : list.toArray(new String[0]);
+
+    }
+
+ 
+
+    // Reads file and returns int array
+
+    private int[] readIntArray(String filename) {
+
+        ArrayList<Integer> list = new ArrayList<>();
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+
+                list.add(Integer.parseInt(line));
+
+            }
+
+            br.close();
+
+        } catch (IOException | NumberFormatException e) {
+
+            System.out.println("Error reading file: " + filename);
+
+        }
+
+        return list.isEmpty() ? new int[0] : list.stream().mapToInt(i -> i).toArray();
+
+    }
+
+ 
+
+    // Reads file and returns double array
+
+    private double[] readDoubleArray(String filename) {
+
+        ArrayList<Double> list = new ArrayList<>();
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+
+                list.add(Double.parseDouble(line));
+
+            }
+
+            br.close();
+
+        } catch (IOException | NumberFormatException e) {
+
+            System.out.println("Error reading file: " + filename);
+
+        }
+
+        return list.isEmpty() ? new double[0] : list.stream().mapToDouble(d -> d).toArray();
+
+    }
+
+ 
+
+    // Reads file and returns String array for income categories
+
+    private String[] readIncomeCategoryArray(String filename) {
+
+        return readStringArray(filename);
+
+    }
+
+ 
+
+    // Identify high-risk communities
+
+    public void identifyHighRiskCommunities(String incomeCategory, double unemploymentThreshold) {
+
+        if (countries.length == 0 || incomes.length == 0 || unemploymentRates.length == 0) {
+
+            System.out.println("Error: One or more datasets are empty. Cannot analyze high-risk communities.");
+
+            return;
+
+        }
+
+       
+
+        System.out.println("High-risk communities with " + incomeCategory + " and unemployment rate above " + unemploymentThreshold + "%:");
+
+        for (int i = 0; i < Math.min(countries.length, Math.min(incomes.length, unemploymentRates.length)); i++) {
+
+            if (incomes[i].equalsIgnoreCase(incomeCategory) && unemploymentRates[i] > unemploymentThreshold) {
+
+                System.out.println(countries[i]);
+
+            }
+
+        }
+
+    }
+
+ 
+
+    // Display basic info
+
+    public void displayInfo() {
+
+        System.out.println("Total communities analyzed: " + Math.min(countries.length, Math.min(incomes.length, unemploymentRates.length)));
+
+    }
+
+ 
+
+    // Main method for testing
+
+    public static void main(String[] args) {
+
+        DataAnalyzer data = new DataAnalyzer("countries.txt", "populations.txt", "incomes.txt", "unemployment.txt");
+
+        data.displayInfo();
+
+        data.identifyHighRiskCommunities("low income", 10);
+
     }
 
 }

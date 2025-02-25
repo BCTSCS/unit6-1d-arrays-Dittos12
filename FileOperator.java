@@ -2,10 +2,7 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class FileOperator {
     private String filename;
@@ -69,6 +66,36 @@ public class FileOperator {
             }
         }
         return mode;
+    }
+
+    public ArrayList<Double> toStringList() {
+        ArrayList<Double> result = new ArrayList<>();
+
+        while(fileReader.hasNextLine()) {
+            result.add(fileReader.nextLine());
+        }
+
+        return result;
+    }
+
+    public ArrayList<String> toStringList() {
+        ArrayList<String> result = new ArrayList<>();
+
+        while(fileReader.hasNextLine()) {
+            result.add(fileReader.nextLine());
+        }
+
+        return result;
+    }
+
+    public ArrayList<Integer> toStringList() {
+        ArrayList<Integer> result = new ArrayList<>();
+
+        while(fileReader.hasNextLine()) {
+            result.add(fileReader.nextLine());
+        }
+
+        return result;
     }
 
     public static void main(String[] args) {

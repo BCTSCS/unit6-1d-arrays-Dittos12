@@ -1,90 +1,107 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+ 
 
 public class DataGUI extends JFrame {
+
     private JTextField inputField;
-    private JButton analyzeColorButton, analyzeDietButton, analyzeStatusButton, analyzeNameButton;
-    private JButton commonColorButton, commonDietButton, commonStatusButton;
-    private JButton leastCommonColorButton, statusPercentageButton;
+
+    private JButton statusButton, percentageButton;
+
     private JTextArea resultsArea;
+
     private DataAnalyzer analyzer;
 
-    public DataGUI() {
-        setTitle("Data Analysis GUI");
-        setSize(600, 600);
-        setLayout(new FlowLayout());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ 
 
-        analyzer = new DataAnalyzer("countries.txt", "populations.txt", "incomes.txt", "unemployment.txt");
+    public DataGUI() {
+
+        super("Data Analysis Tool");
+
+        setSize(500, 400);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        setLayout(new FlowLayout());
+
+ 
+
+        // Initialize data analyzer with data files
+
+        analyzer = new DataAnalyzer("countries.txt", "populations.txt",
+
+                                  "incomes.txt", "unemployment.txt");
+
+ 
+
+        // Create components
 
         inputField = new JTextField(20);
-        analyzeColorButton = new JButton("Analyze Color");
-        analyzeDietButton = new JButton("Analyze Diet");
-        analyzeStatusButton = new JButton("Analyze Status");
-        analyzeNameButton = new JButton("Analyze Name");
-        commonColorButton = new JButton("Most Common Color");
-        commonDietButton = new JButton("Most Common Diet");
-        commonStatusButton = new JButton("Most Common Status");
-        leastCommonColorButton = new JButton("Least Common Color");
-        statusPercentageButton = new JButton("Status Percentage");
-        resultsArea = new JTextArea(10, 50);
+
+        statusButton = new JButton("Analyze by Status");
+
+        percentageButton = new JButton("Status Percentage");
+
+        resultsArea = new JTextArea(10, 40);
+
+        resultsArea.setEditable(false);
+
+ 
+
+        // Add components to window
 
         add(inputField);
-        add(analyzeColorButton);
-        add(analyzeDietButton);
-        add(analyzeStatusButton);
-        add(analyzeNameButton);
-        add(commonColorButton);
-        add(commonDietButton);
-        add(commonStatusButton);
-        add(leastCommonColorButton);
-        add(statusPercentageButton);
+
+        add(statusButton);
+
+        add(percentageButton);
+
         add(new JScrollPane(resultsArea));
 
-        analyzeColorButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                analyzeByColor();
-            }
-        });
-        
-        analyzeDietButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                analyzeByDiet();
-            }
-        });
+ 
 
-        analyzeStatusButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                analyzeByStatus();
-            }
-        });
+        // Setup button actions
 
-        analyzeNameButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                analyzeByName();
-            }
-        });
+        statusButton.addActionListener(e -> analyzeStatus());
+
+        percentageButton.addActionListener(e -> showPercentage());
+
+ 
+
+        setVisible(true);
+
     }
 
-    private void analyzeByColor() {
-        resultsArea.setText("Analyzing by color...");
+ 
+
+    private void analyzeStatus() {
+
+        String status = inputField.getText();
+
+        resultsArea.setText("Analyzing status: " + status);
+
+        analyzer.identifyHighRiskCommunities(status, 10);
+
     }
 
-    private void analyzeByDiet() {
-        resultsArea.setText("Analyzing by diet...");
+ 
+
+    private void showPercentage() {
+
+        double average = analyzer.calculateAverageUnemployment();
+
+        resultsArea.setText("Average unemployment: " + average + "%");
+
     }
 
-    private void analyzeByStatus() {
-        resultsArea.setText("Analyzing by status...");
-    }
-
-    private void analyzeByName() {
-        resultsArea.setText("Analyzing by name...");
-    }
+ 
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new DataGUI().setVisible(true));
+
+        new DataGUI();
+
     }
+
 }

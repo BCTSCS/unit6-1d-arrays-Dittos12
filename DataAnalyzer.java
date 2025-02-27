@@ -1,4 +1,5 @@
 import java.io.*;
+
 import java.util.*;
 
  
@@ -167,6 +168,62 @@ public class DataAnalyzer {
 
  
 
+    // Statistical method: Calculate average unemployment rate
+
+    public double calculateAverageUnemployment() {
+
+        if (unemploymentRates.length == 0) {
+
+            System.out.println("Error: No unemployment data available.");
+
+            return 0;
+
+        }
+
+        double sum = 0;
+
+        for (double rate : unemploymentRates) {
+
+            sum += rate;
+
+        }
+
+        return sum / unemploymentRates.length;
+
+    }
+
+ 
+
+    // Analytical method: Find country with highest unemployment rate
+
+    public String findHighestUnemploymentCountry() {
+
+        if (countries.length == 0 || unemploymentRates.length == 0) {
+
+            System.out.println("Error: No data available.");
+
+            return "N/A";
+
+        }
+
+        int maxIndex = 0;
+
+        for (int i = 1; i < unemploymentRates.length; i++) {
+
+            if (unemploymentRates[i] > unemploymentRates[maxIndex]) {
+
+                maxIndex = i;
+
+            }
+
+        }
+
+        return countries[maxIndex] + " with " + unemploymentRates[maxIndex] + "% unemployment";
+
+    }
+
+ 
+
     // Display basic info
 
     public void displayInfo() {
@@ -186,6 +243,10 @@ public class DataAnalyzer {
         data.displayInfo();
 
         data.identifyHighRiskCommunities("low income", 10);
+
+        System.out.println("Average Unemployment Rate: " + data.calculateAverageUnemployment() + "%");
+
+        System.out.println("Country with Highest Unemployment: " + data.findHighestUnemploymentCountry());
 
     }
 

@@ -1,111 +1,186 @@
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 public class FileOperator {
-    private String filename;
 
-    public FileOperator(String fn) {
-        this.filename = fn;
-    }
-
-    public double[] toDoubleArray(int arraySize) {
-        double[] arr = new double[arraySize];
+    public static String[] toStringArray(String filename) {
+        ArrayList<String> arr = new ArrayList<>();
         try {
-            File myObj = new File(filename);
-            Scanner myReader = new Scanner(myObj);
-            int i = 0;
-            while (myReader.hasNextDouble() && i < arraySize) {
-                arr[i] = myReader.nextDouble();
-                i++;
+            Scanner myReader = new Scanner(new File(filename));
+            while (myReader.hasNextLine()) {
+                arr.add(myReader.nextLine());
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-            return new double[0]; // Return empty array in case of error
-        }
-        return arr;
-    }
-
-    public static double findMin(double[] arr) {
-        return Arrays.stream(arr).min().orElse(Double.NaN);
-    }
-
-    public static double findMax(double[] arr) {
-        return Arrays.stream(arr).max().orElse(Double.NaN);
-    }
-
-    public static double findAverage(double[] arr) {
-        return Arrays.stream(arr).average().orElse(Double.NaN);
-    }
-
-    public static double findMedian(double[] arr) {
-        Arrays.sort(arr);
-        int length = arr.length;
-        if (length % 2 == 0) {
-            return (arr[length / 2 - 1] + arr[length / 2]) / 2.0;
-        } else {
-            return arr[length / 2];
-        }
-    }
-
-    public static double findMode(double[] arr) {
-        Map<Double, Integer> freqMap = new HashMap<>();
-        for (double num : arr) {
-            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+            System.out.println("File not found.");
         }
 
-        double mode = arr[0];
-        int maxCount = 0;
-        for (Map.Entry<Double, Integer> entry : freqMap.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                maxCount = entry.getValue();
-                mode = entry.getKey();
+        String[] r = new String[arr.size()];
+        return arr.toArray(r);
+
+    }
+
+    public static Integer[] toIntArray(String filename) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        try {
+            Scanner myReader = new Scanner(new File(filename));
+            while (myReader.hasNextLine()) {
+                arr.add(myReader.nextInt());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+
+        Integer[] r = new Integer[arr.size()];
+        return arr.toArray(r);
+    }
+
+    public static Double[] toDoubleArray(String filename) {
+        ArrayList<Double> arr = new ArrayList<>();
+        try {
+            Scanner myReader = new Scanner(new File(filename));
+            while (myReader.hasNextLine()) {
+                arr.add(myReader.nextDouble());
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        
+        Double[] r = new Double[arr.size()];
+        return arr.toArray(r);
+    }
+
+    public static int getStringIndex(String[] arr, String value) {
+        int index = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(value)) {
+                index = i;
+                break;
             }
         }
-        return mode;
+        return index;
     }
-
-    public ArrayList<Double> toStringList() {
-        ArrayList<Double> result = new ArrayList<>();
-
-        while(fileReader.hasNextLine()) {
-            result.add(fileReader.nextLine());
+    public static int getDoubleIndex(Double[] arr, double value) {
+        int index = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == value) {
+                index = i;
+                break;
+            }
         }
-
-        return result;
+        return index;
     }
-
-    public ArrayList<String> toStringList() {
-        ArrayList<String> result = new ArrayList<>();
-
-        while(fileReader.hasNextLine()) {
-            result.add(fileReader.nextLine());
+    public static int getIntIndex(Integer[] arr, int value) {
+        int index = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == value) {
+                index = i;
+                break;
+            }
         }
-
-        return result;
+        return index;
     }
+    
+    
 
-    public ArrayList<Integer> toStringList() {
-        ArrayList<Integer> result = new ArrayList<>();
+    // public static void main(ArrayList<String> args) {
+    //     // Initialize FileOperator with the provided file
+    //     FileOperator fileOp = new FileOperator("FileOperator/array.txt");
+    //     int arraySize = 14;
 
-        while(fileReader.hasNextLine()) {
-            result.add(fileReader.nextLine());
-        }
+    //     // Test toStringArray
+    //     ArrayList<String> stringArray = fileOp.toStringArray(arraySize);
+    //     System.out.println("String Array:");
+    //     System.out.println(Arrays.toString(stringArray));
 
-        return result;
-    }
+    //     // Test toIntArray
+    //     int[] intArray = fileOp.toIntArray(arraySize);
+    //     System.out.println("Integer Array:");
+    //     System.out.println(Arrays.toString(intArray));
 
-    public static void main(String[] args) {
-        FileOperator fileOp = new FileOperator("array.txt");
-        double[] internetUsage = fileOp.toDoubleArray(20);
-        
-        System.out.println("Min: " + findMin(internetUsage));
-        System.out.println("Max: " + findMax(internetUsage));
-        System.out.println("Average: " + findAverage(internetUsage));
-        System.out.println("Median: " + findMedian(internetUsage));
-        System.out.println("Mode: " + findMode(internetUsage));
-    }
+    //     // Test toDoubleArray
+    //     double[] doubleArray = fileOp.toDoubleArray(arraySize);
+    //     System.out.println("Double Array:");
+    //     System.out.println(Arrays.toString(doubleArray));
+
+    //     // Convert integer array to a 2D String array for other operations
+    //     ArrayList<String>[] data = new ArrayList<String>arraySize][1];
+    //     for (int i = 0; i < arraySize; i++) {
+    //         data[i][0] = String.valueOf(intArray[i]);
+    //     }
+
+    //     System.out.println("Minimum value: " + FileOperator.findMin(data, 0));
+    //     System.out.println("Maximum value: " + FileOperator.findMax(data, 0));
+    //     System.out.println("Average value: " + FileOperator.calculateAverage(data, 0));
+
+    //     FileOperator.bubbleSort(data, 0, true);
+    //     System.out.println("Sorted (Ascending):");
+    //     for (ArrayList<String> row : data) {
+    //         System.out.println(row[0]);
+    //     }
+
+    //     FileOperator.bubbleSort(data, 0, false);
+    //     System.out.println("Sorted (Descending):");
+    //     for (ArrayList<String> row : data) {
+    //         System.out.println(row[0]);
+    //     }
+
+    //     System.out.println("Greater Than 5:");
+    //     for (int y : FileOperator.greaterThan(fileOp.toIntArray(arraySize), 5)) {
+    //         System.out.println(y);
+    //     }
+    // }
 }
+
+
+
+
+
+// public static String[] toStringArray(String filename, int arraySize) {
+//     String[] arr = new String[arraySize];
+//     try {
+//         Scanner myReader = new Scanner(new File(filename));
+//         int i = 0;
+//         while (myReader.hasNextLine() && i < arraySize) {
+//             arr[i++] = myReader.nextLine();
+//         }
+//         myReader.close();
+//     } catch (FileNotFoundException e) {
+//         System.out.println("File not found.");
+//     }
+//     return arr;
+// }
+
+// public static int[] toIntArray(String filename, int arraySize) {
+//     int[] arr = new int[arraySize];
+//     try {
+//         Scanner myReader = new Scanner(new File(filename));
+//         int i = 0;
+//         while (myReader.hasNextInt() && i < arraySize) {
+//             arr[i++] = myReader.nextInt();
+//         }
+//         myReader.close();
+//     } catch (FileNotFoundException e) {
+//         System.out.println("File not found.");
+//     }
+//     return arr;
+// }
+
+// public static double[] toDoubleArray(String filename, int arraySize) {
+//     double[] arr = new double[arraySize];
+//     try {
+//         Scanner myReader = new Scanner(new File(filename));
+//         int i = 0;
+//         while (myReader.hasNextDouble() && i < arraySize) {
+//             arr[i++] = myReader.nextDouble();
+//         }
+//         myReader.close();
+//     } catch (FileNotFoundException e) {
+//         System.out.println("File not found.");
+//     }
+//     return arr;
+// }
